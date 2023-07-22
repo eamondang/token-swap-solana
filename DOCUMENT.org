@@ -88,15 +88,15 @@ Blogs and Tutorials: Be on the lookout for blogs and tutorials written by Experi
 
 * Understand Token Swap instructions
 ** Key instructions provided by Token Swap Program
-To execute a swap
-    Users can immediately begin trading on a swap pool using the swap instruction. The swap instruction transfers funds from a user's token account into the swap pool's token account. The swap pool then mints LP-tokens to the user's LP-token account.
++ To execute a swap
+  Users can immediately begin trading on a swap pool using the swap instruction. The swap instruction transfers funds from a user's token account into the swap pool's token account. The swap pool then mints LP-tokens to the user's LP-token account.
 
-    Since Solana programs require all accounts to be declared in the instruction, users need to gather all account information from the token swap state account: the token A and B accounts, pool token mint, and fee account.
+  Since Solana programs require all accounts to be declared in the instruction, users need to gather all account information from the token swap state account: the token A and B accounts, pool token mint, and fee account.
 
-    We swap tokens using the TokenSwap.swapInstruction helper function which requires the following arguments:
-1. tokenSwap - the token swap state account
-  + Before you can create a swap pool, you'll need to create a token swap state account. This account will be used to hold information about the swap pool itself.
-  + To create the token swap state account, you use the SystemProgram instruction createAccount.
+  We swap tokens using the TokenSwap.swapInstruction helper function which requires the following arguments:
+*** tokenSwap - the token swap state account
++ Before you can create a swap pool, you'll need to create a token swap state account. This account will be used to hold information about the swap pool itself.
++ To create the token swap state account, you use the SystemProgram instruction createAccount.
 
     #+begin_src js
 const transaction = new Web3.Transaction();
@@ -112,9 +112,9 @@ const tokenSwapStateAccountInstruction = await Web3.SystemProgram.createAccount(
 transaction.add(tokenSwapStateAccountInstruction);
     #+end_src
 
-2. authority - the swap pool authority
-  + The swap pool authority is the account used to sign for transactions on behalf of the swap program. This account is a Program Derived Address (PDA) derived from the Token Swap Program and the token swap state account.
-  + PDAs can only be created by their owning program, so you don't need to create this account directly. You do, however, need to know its public key. You can discover it using the @solana/web3 library's PublicKey.findProgramAddress function.
+*** authority - the swap pool authority
++ The swap pool authority is the account used to sign for transactions on behalf of the swap program. This account is a Program Derived Address (PDA) derived from the Token Swap Program and the token swap state account.
++ PDAs can only be created by their owning program, so you don't need to create this account directly. You do, however, need to know its public key. You can discover it using the @solana/web3 library's PublicKey.findProgramAddress function.
 
 #+begin_src js
 const [swapAuthority, bump] = await Web3.PublicKey.findProgramAddress(
@@ -123,17 +123,17 @@ const [swapAuthority, bump] = await Web3.PublicKey.findProgramAddress(
 )
 #+end_src
 
-3. userTransferAuthority - the delegate over the user token account
-  + It’s a publickey in your wallet. You use the SystemProgram to get public key.
+*** userTransferAuthority - the delegate over the user token account
++ It’s a publickey in your wallet. You use the SystemProgram to get public key.
 #+begin_src js
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 
 const { publicKey, sendTransaction } = useWallet();
 #+end_src
 
-4. userSource - userDestination
-  + userSource : user token account(Token A) to transfer tokens into the swap
-  + userDestination : user token account(Token B) to receive tokens sent from the swap pool
+*** userSource - userDestination
++ userSource : user token account(Token A) to transfer tokens into the swap
++ userDestination : user token account(Token B) to receive tokens sent from the swap pool
 
 Token A and Token B accounts are associated token accounts used for the actual swap pool. These accounts must contain some number of A/B tokens respectively and the swap authority PDA must be marked as the owner of each so that the Token Swap Program can sign for transactions and transfer tokens from each account.
 
@@ -152,9 +152,9 @@ const tokenAAccountInstruction = await token.createAssociatedTokenAccountInstruc
 )
 #+end_src
 
-5. poolSource - poolDestination
-  + poolSource: swap pool token account (pool token A) to receive tokens transferred from the user
-  + poolDestination: swap pool token account (pool token B) to send tokens to the user
+*** poolSource - poolDestination
++ poolSource: swap pool token account (pool token A) to receive tokens transferred from the user
++ poolDestination: swap pool token account (pool token B) to send tokens to the user
 
 The pool token account is the account that the initial liquidity pool tokens get minted to when the swap account is first created. Subsequent minting of LP-tokens will be minted directly to the account of the user adding liquidity to the pool. Liquidity pool tokens represent ownership in the deposited liquidity in the pool.
 
@@ -179,8 +179,8 @@ transaction.add(createTokenAccountPoolInstruction);
 transaction.add(initializeTokenAccountPoolInstruction);
 #+end_src
 
-6. poolMint - the LP-token mint address
-  + The pool token mint is the mint of the LP-tokens that represent an LP’s ownership in the pool. You create this mint the way you learned in the Token Program lesson. For the swap pool to work, the mint authority must be the swap authority account.
+*** poolMint - the LP-token mint address
++ The pool token mint is the mint of the LP-tokens that represent an LP’s ownership in the pool. You create this mint the way you learned in the Token Program lesson. For the swap pool to work, the mint authority must be the swap authority account.
 #+begin_src js
 const poolTokenMint = await token.createMint(
   connection,
@@ -191,9 +191,9 @@ const poolTokenMint = await token.createMint(
 )
 #+end_src
 
-7. feeAccount - the token account which receives the owner trade fees
-  + The pool token fee account is the token account that the fees for the token swaps are paid to.
-  + Example token account : =HfoTxFR1Tm6kGmWgYWD6J7YHVy1UwqSULUGVLXkJqaKN=
+*** feeAccount - the token account which receives the owner trade fees
++ The pool token fee account is the token account that the fees for the token swaps are paid to.
++ Example token account : =HfoTxFR1Tm6kGmWgYWD6J7YHVy1UwqSULUGVLXkJqaKN=
 
 #+begin_src js
 const feeOwner = new web3.PublicKey(`HfoTxFR1Tm6kGmWgYWD6J7YHVy1UwqSULUGVLXkJqaKN`);
@@ -212,20 +212,20 @@ let tokenFeeAccountInstructor = await token.createAssociatedTokenAccountInstruct
 )
 #+end_src
 
-8. hostFeeAccount - the token account which receives the host trade fees (optional parameter), set to null if none is provided
-9. swapProgramId - the address of the Token Swap Program
+*** hostFeeAccount - the token account which receives the host trade fees (optional parameter), set to null if none is provided
+*** swapProgramId - the address of the Token Swap Program
 #+begin_src js
 import { TokenSwap, TOKEN_SWAP_PROGRAM_ID } from '@solana/spl-token-swap';
 #+end_src
 
-10. tokenProgramId - the addres of the Token Program
+*** tokenProgramId - the addres of the Token Program
 #+begin_src js
 import { TokenSwap, TOKEN_SWAP_PROGRAM_ID } from '@solana/spl-token-swap';
 #+end_src
 
-11. amountIn - amount of tokens the user wants to transfer to the swap pool
-12. minimumAmountOut
-  - Minimum amount of tokens send to the user token account. This parameter is used to account for slippage. Slippage is the difference between the value of a token when you submit the transaction versus when the order is fulfilled. In this case, the lower the number, the more slippage can possible occur without the transaction failing. Throughout this lesson we'll use 0 for swaps as calculating slippage is outside the scope of this lesson. In a production app, however, it's important to let users specify the amount of slippage they're comfortable with.
+*** amountIn - amount of tokens the user wants to transfer to the swap pool
+*** minimumAmountOut
++ Minimum amount of tokens send to the user token account. This parameter is used to account for slippage. Slippage is the difference between the value of a token when you submit the transaction versus when the order is fulfilled. In this case, the lower the number, the more slippage can possible occur without the transaction failing. Throughout this lesson we'll use 0 for swaps as calculating slippage is outside the scope of this lesson. In a production app, however, it's important to let users specify the amount of slippage they're comfortable with.
 
 ** Program instruction for swapping Token A for Token B
 + The instruction for swapping token A for token B will look like this:
