@@ -4,6 +4,19 @@
 #+SETUPFILE: ~/theme-readtheorg.setup
 #+HTML_HEAD: <style>pre.src{background:#343131;color:white;} </style>
 
+* Table of Contents :TOC:
+- [[#introduction][Introduction]]
+  - [[#what-is-token-swap-program][What is Token Swap Program?]]
+  - [[#token-swap-program-and-solanaspl-token-swap][Token Swap Program and @solana/spl-token-swap]]
+  - [[#how-to-calculate-the-output-of-a-token-based-on-curves][How to calculate the output of a token based on curves?]]
+- [[#set-up-development-environment][Set up development environment]]
+  - [[#install-development-environment][Install development environment]]
+  - [[#necessary-tools-and-resources][Necessary tools and resources]]
+- [[#understand-token-swap-instructions][Understand Token Swap instructions]]
+  - [[#key-instructions-provided-by-token-swap-program][Key instructions provided by Token Swap Program]]
+  - [[#program-instruction-for-swapping-token-a-for-token-b][Program instruction for swapping Token A for Token B]]
+- [[#practise-token-swap-project][Practise Token Swap Project]]
+
 * Introduction
 ** What is Token Swap Program?
 The Token Swap Program allows simple trading of token pairs without a centralized limit order book. The program uses a mathematical formula called "curve" to calculate the price of all trades. Curves aim to mimic normal market dynamics: for example, as traders buy a lot of one token type, the value of the other token type goes up.
@@ -249,7 +262,7 @@ const instruction = TokenSwap.swapInstruction(
 transaction.add(instruction);
 #+end_src
 
-* 4. Practise Token Swap Project
+* Practise Token Swap Project
 For this Project, a token pool of two brand new tokens has been created and is live on Devnet. We'll walk through building out a frontend UI to interact with this swap pool! Since the pool is already made inside the /utils/constants.ts file, we don't have to worry about initiating the pool and funding it with tokens. Instead, we'll focus on building out the instructions for swapping from one token to the other.
 
 Note that our UI has a dropdown to allow users to select which token they would like to swap from, so we will have to create our instruction differently based on what the user selects.
