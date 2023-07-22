@@ -7,20 +7,20 @@ import { Airdrop } from "../components/AirdropForm"
 import { TokenSwapForm } from "../components/TokenSwapForm"
 
 const Home: NextPage = () => {
-    return (
-        <div className={styles.App}>
-            <Head>
-                <title>Token Swap</title>
-            </Head>
-            <AppBar />
-            <Center>
-                <Box>
-                    <Airdrop />
-                    <TokenSwapForm />
-                </Box>
-            </Center>
-        </div>
-    )
+  return (
+    <div className={styles.App}>
+      <Head>
+        <title>Token Swap</title>
+      </Head>
+      <AppBar />
+      <Center>
+        <Box>
+          <Airdrop />
+          <TokenSwapForm />
+        </Box>
+      </Center>
+    </div>
+  )
 }
 
 export default Home
