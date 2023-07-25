@@ -92,7 +92,7 @@ Now, if a trader wishes to put in a specific amount token A for some amount of t
 
 Putting in the 10 token A along with our invariant of half a million, we would need to solve for "B_out" like so:
 
-#+begin_src json
+#+begin_src js
 (100 + 10) * (5,000 - B_out) = 500,000
 5,000 - B_out = 500,000 / 110
 5,000 - (500,000 / 110) = B_out
